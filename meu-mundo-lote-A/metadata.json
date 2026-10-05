@@ -1,0 +1,7 @@
+{
+  "name": "Meu Mundo — Apoio à Família",
+  "description": "Micro-aplicativo acolhedor de apoio a pais e responsáveis por crianças autistas, com rotina visual previsível, pranchas de comunicação alternativa, apoio emocional ao cuidador, diário de observações e assistente com orientações práticas.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

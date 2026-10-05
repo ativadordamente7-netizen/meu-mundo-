@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cosmicPulse {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes cosmicStreamFloat {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+@keyframes gradualRadialGlow {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.45;
+    filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.45)) drop-shadow(0 0 28px rgba(168, 85, 247, 0.25));
+  }
+  40% {
+    transform: scale(1.03);
+    opacity: 0.72;
+    filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.7)) drop-shadow(0 0 48px rgba(251, 191, 36, 0.45));
+  }
+  75% {
+    transform: scale(1.06);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 42px rgba(56, 189, 248, 0.85)) drop-shadow(0 0 70px rgba(168, 85, 247, 0.65)) drop-shadow(0 0 90px rgba(251, 191, 36, 0.5));
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 1;
+    filter: drop-shadow(0 0 55px rgba(56, 189, 248, 0.95)) drop-shadow(0 0 90px rgba(168, 85, 247, 0.85)) drop-shadow(0 0 115px rgba(251, 191, 36, 0.7));
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.animate-cosmicPulse {
+  animation: cosmicPulse 4s ease-in-out infinite;
+}
+
+.animate-gentleFloat {
+  animation: gentleFloat 5s ease-in-out infinite;
+}
+
+.animate-cosmicStream {
+  animation: cosmicStreamFloat 14s ease-in-out infinite;
+}
+
+.animate-gradualGlow {
+  animation: gradualRadialGlow 2.6s ease-in-out infinite alternate;
+}
+
+/* Cosmic frosted card styling with joyful warmth and color depth */
+.cosmic-card {
+  background: rgba(15, 23, 52, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(129, 140, 248, 0.22);
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.4), 0 0 12px -2px rgba(99, 102, 241, 0.08);
+}
+
+.cosmic-card-hover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cosmic-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(251, 191, 36, 0.45);
+  box-shadow: 0 10px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(251, 191, 36, 0.22);
+}
+
+/* Neurodiversity Rainbow Gradient Bar & Glow */
+.rainbow-gradient-bar {
+  background: linear-gradient(90deg, #ec4899 0%, #f59e0b 25%, #10b981 50%, #06b6d4 75%, #8b5cf6 100%);
+}
+
+.rainbow-text-gradient {
+  background: linear-gradient(90deg, #f472b6, #fbbf24, #34d399, #38bdf8, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Category Colorful Card Variations (AAC / Visual Supports) */
+.card-category-basic {
+  background: linear-gradient(145deg, rgba(6, 78, 59, 0.35) 0%, rgba(13, 22, 48, 0.88) 100%);
+  border: 1.5px solid rgba(52, 211, 153, 0.42);
+  box-shadow: 0 4px 20px -2px rgba(6, 95, 70, 0.25);
+}
+.card-category-basic:hover {
+  border-color: rgba(52, 211, 153, 0.8);
+  box-shadow: 0 8px 28px -2px rgba(16, 185, 129, 0.4);
+}
+
+.card-category-choices {
+  background: linear-gradient(145deg, rgba(120, 53, 15, 0.35) 0%, rgba(13, 22, 48, 0.88) 100%);
+  border: 1.5px solid rgba(251, 191, 36, 0.45);
+  box-shadow: 0 4px 20px -2px rgba(180, 83, 9, 0.25);
+}
+.card-category-choices:hover {
+  border-color: rgba(251, 191, 36, 0.85);
+  box-shadow: 0 8px 28px -2px rgba(245, 158, 11, 0.4);
+}
+
+.card-category-feelings {
+  background: linear-gradient(145deg, rgba(136, 19, 55, 0.35) 0%, rgba(13, 22, 48, 0.88) 100%);
+  border: 1.5px solid rgba(244, 114, 182, 0.45);
+  box-shadow: 0 4px 20px -2px rgba(190, 24, 93, 0.25);
+}
+.card-category-feelings:hover {
+  border-color: rgba(244, 114, 182, 0.85);
+  box-shadow: 0 8px 28px -2px rgba(236, 72, 153, 0.4);
+}
+
+.card-category-free {
+  background: linear-gradient(145deg, rgba(12, 74, 110, 0.35) 0%, rgba(13, 22, 48, 0.88) 100%);
+  border: 1.5px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 4px 20px -2px rgba(2, 132, 199, 0.25);
+}
+.card-category-free:hover {
+  border-color: rgba(56, 189, 248, 0.85);
+  box-shadow: 0 8px 28px -2px rgba(14, 165, 233, 0.4);
+}
+
+/* Custom refined joyful rainbow scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(8, 12, 32, 0.7);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ec4899, #f59e0b, #10b981, #06b6d4, #8b5cf6);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f472b6, #fbbf24, #34d399, #38bdf8, #a78bfa);
+}

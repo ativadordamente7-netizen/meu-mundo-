@@ -1,0 +1,115 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Perfil familiar e preferências de acessibilidade e acolhimento",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID do usuário no Firebase Auth" },
+        "parentName": { "type": "string", "maxLength": 100 },
+        "childName": { "type": "string", "maxLength": 100 },
+        "childAge": { "type": "string", "maxLength": 50 },
+        "focusArea": { "type": "string", "maxLength": 200 },
+        "onboardingCompleted": { "type": "boolean" },
+        "highContrast": { "type": "boolean" },
+        "reducedMotion": { "type": "boolean" },
+        "fontSize": { "type": "string", "enum": ["normal", "large", "extralarge"] },
+        "soundEnabled": { "type": "boolean" },
+        "versesEnabled": { "type": "boolean" },
+        "verseFrequency": { "type": "string", "enum": ["normal", "reduced", "disabled"] },
+        "email": { "type": "string", "maxLength": 150 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "parentName", "childName"]
+    },
+    "RoutineActivity": {
+      "title": "RoutineActivity",
+      "description": "Atividades da rotina visual diária",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 150 },
+        "time": { "type": "string", "maxLength": 20 },
+        "period": { "type": "string", "enum": ["morning", "afternoon", "night"] },
+        "category": { "type": "string", "maxLength": 50 },
+        "iconName": { "type": "string", "maxLength": 50 },
+        "completed": { "type": "boolean" },
+        "prepWhat": { "type": "string", "maxLength": 300 },
+        "prepHelp": { "type": "string", "maxLength": 300 },
+        "prepWarning": { "type": "string", "maxLength": 300 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "period", "completed"]
+    },
+    "CommunicationCard": {
+      "title": "CommunicationCard",
+      "description": "Cartão visual de comunicação alternativa e PECS",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "enum": ["basic", "choices", "feelings", "free"] },
+        "iconName": { "type": "string", "maxLength": 50 },
+        "colorBg": { "type": "string", "maxLength": 50 },
+        "colorText": { "type": "string", "maxLength": 50 },
+        "colorBorder": { "type": "string", "maxLength": 50 },
+        "isFavorite": { "type": "boolean" },
+        "custom": { "type": "boolean" },
+        "imageUrl": { "type": "string", "maxLength": 2048 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "category"]
+    },
+    "ObservationEntry": {
+      "title": "ObservationEntry",
+      "description": "Registro no diário de observações para acompanhamento terapêutico",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "date": { "type": "string", "maxLength": 20 },
+        "time": { "type": "string", "maxLength": 20 },
+        "situation": { "type": "string", "maxLength": 500 },
+        "beforeContext": { "type": "string", "maxLength": 500 },
+        "reaction": { "type": "string", "maxLength": 500 },
+        "whatHelped": { "type": "string", "maxLength": 500 },
+        "toDiscussWithProfessional": { "type": "string", "maxLength": 500 },
+        "category": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "date", "situation", "reaction"]
+    },
+    "TestConnection": {
+      "title": "TestConnection",
+      "description": "Documento de verificação de conectividade",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Documento do usuário com configurações e perfil da família"
+    },
+    "/users/{userId}/activities/{activityId}": {
+      "schema": "RoutineActivity",
+      "description": "Atividades da rotina da família do usuário"
+    },
+    "/users/{userId}/cards/{cardId}": {
+      "schema": "CommunicationCard",
+      "description": "Cartões de comunicação da família do usuário"
+    },
+    "/users/{userId}/observations/{observationId}": {
+      "schema": "ObservationEntry",
+      "description": "Observações registradas pela família"
+    },
+    "/test/{testId}": {
+      "schema": "TestConnection",
+      "description": "Coleção de teste de conexão para inicialização segura"
+    }
+  }
+}

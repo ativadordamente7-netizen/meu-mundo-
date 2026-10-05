@@ -1,0 +1,119 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidUserProfile(data, userId) {
+      return data.userId == userId &&
+        data.parentName is string && data.parentName.size() > 0 && data.parentName.size() <= 100 &&
+        data.childName is string && data.childName.size() > 0 && data.childName.size() <= 100 &&
+        (!('childAge' in data) || (data.childAge is string && data.childAge.size() <= 50)) &&
+        (!('focusArea' in data) || (data.focusArea is string && data.focusArea.size() <= 200)) &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 150)) &&
+        (!('fontSize' in data) || (data.fontSize in ['normal', 'large', 'extralarge'])) &&
+        (!('verseFrequency' in data) || (data.verseFrequency in ['normal', 'reduced', 'disabled'])) &&
+        (!('onboardingCompleted' in data) || (data.onboardingCompleted is bool)) &&
+        (!('highContrast' in data) || (data.highContrast is bool)) &&
+        (!('reducedMotion' in data) || (data.reducedMotion is bool)) &&
+        (!('soundEnabled' in data) || (data.soundEnabled is bool)) &&
+        (!('versesEnabled' in data) || (data.versesEnabled is bool));
+    }
+
+    function isValidRoutineActivity(data, userId) {
+      return data.id is string && data.id.size() <= 128 &&
+        data.userId == userId &&
+        data.title is string && data.title.size() > 0 && data.title.size() <= 150 &&
+        data.period in ['morning', 'afternoon', 'night'] &&
+        data.completed is bool &&
+        (!('time' in data) || (data.time is string && data.time.size() <= 20)) &&
+        (!('category' in data) || (data.category is string && data.category.size() <= 50)) &&
+        (!('iconName' in data) || (data.iconName is string && data.iconName.size() <= 50)) &&
+        (!('prepWhat' in data) || (data.prepWhat is string && data.prepWhat.size() <= 300)) &&
+        (!('prepHelp' in data) || (data.prepHelp is string && data.prepHelp.size() <= 300)) &&
+        (!('prepWarning' in data) || (data.prepWarning is string && data.prepWarning.size() <= 300));
+    }
+
+    function isValidCommunicationCard(data, userId) {
+      return data.id is string && data.id.size() <= 128 &&
+        data.userId == userId &&
+        data.title is string && data.title.size() > 0 && data.title.size() <= 150 &&
+        data.category in ['basic', 'choices', 'feelings', 'free'] &&
+        (!('iconName' in data) || (data.iconName is string && data.iconName.size() <= 50)) &&
+        (!('colorBg' in data) || (data.colorBg is string && data.colorBg.size() <= 50)) &&
+        (!('colorText' in data) || (data.colorText is string && data.colorText.size() <= 50)) &&
+        (!('colorBorder' in data) || (data.colorBorder is string && data.colorBorder.size() <= 50)) &&
+        (!('isFavorite' in data) || (data.isFavorite is bool)) &&
+        (!('custom' in data) || (data.custom is bool)) &&
+        (!('imageUrl' in data) || (data.imageUrl is string && data.imageUrl.size() <= 60000));
+    }
+
+    function isValidObservationEntry(data, userId) {
+      return data.id is string && data.id.size() <= 128 &&
+        data.userId == userId &&
+        data.date is string && data.date.size() <= 20 &&
+        data.situation is string && data.situation.size() > 0 && data.situation.size() <= 500 &&
+        data.reaction is string && data.reaction.size() > 0 && data.reaction.size() <= 500 &&
+        (!('time' in data) || (data.time is string && data.time.size() <= 20)) &&
+        (!('beforeContext' in data) || (data.beforeContext is string && data.beforeContext.size() <= 500)) &&
+        (!('whatHelped' in data) || (data.whatHelped is string && data.whatHelped.size() <= 500)) &&
+        (!('toDiscussWithProfessional' in data) || (data.toDiscussWithProfessional is string && data.toDiscussWithProfessional.size() <= 500)) &&
+        (!('category' in data) || (data.category is string && data.category.size() <= 50));
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Test connection check
+    match /test/{testId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // User document & subcollections
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false;
+      allow create, update: if isOwner(userId) && isValidId(userId) && isValidUserProfile(incoming(), userId);
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      match /activities/{activityId} {
+        allow get: if isOwner(userId) && isValidId(activityId);
+        allow list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidId(activityId) && isValidRoutineActivity(incoming(), userId);
+        allow delete: if isOwner(userId) && isValidId(activityId);
+      }
+
+      match /cards/{cardId} {
+        allow get: if isOwner(userId) && isValidId(cardId);
+        allow list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidId(cardId) && isValidCommunicationCard(incoming(), userId);
+        allow delete: if isOwner(userId) && isValidId(cardId);
+      }
+
+      match /observations/{observationId} {
+        allow get: if isOwner(userId) && isValidId(observationId);
+        allow list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidId(observationId) && isValidObservationEntry(incoming(), userId);
+        allow delete: if isOwner(userId) && isValidId(observationId);
+      }
+    }
+  }
+}
